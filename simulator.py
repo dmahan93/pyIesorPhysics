@@ -845,7 +845,7 @@ class IESoRWorld:
         #     initMorph["startY"] = minY;
         initial_morphology["startY"] = min_y
         #     initMorph["totalNodes"] = oNodes.size();
-        initial_morphology["total_nodes"] = len(o_nodes)
+        initial_morphology["totalNodes"] = len(o_nodes)
         #
         #     return entityVector;
         # }
