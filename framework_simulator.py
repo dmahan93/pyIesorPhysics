@@ -62,6 +62,7 @@ class IESoRWorld(Framework):
         #     this->world = new b2World(gravity);
         #     this->world->SetAutoClearForces(false);
         # self.world = b2.b2World(self.gravity)
+        self.world.gravity = self.gravity
         self.world.autoClearForces = False
         #
         #     // Define the ground body.
@@ -110,97 +111,97 @@ class IESoRWorld(Framework):
         self.load_body_into_world(self.in_body, self.canvas)
         #
         #
-        #     // Define the dynamic body. We set its position and call the body factory.
-        #     b2BodyDef bodyDef;
-        self.body_def = b2.b2BodyDef()
-        #     bodyDef.type = b2_dynamicBody;
-        self.body_def.type = b2.b2_dynamicBody
-        #     bodyDef.position.Set(0.0f, 24.0f);
-        self.body_def.position = b2.b2Vec2(0.0, 24.0)
-        #
-        #     //add body to world using definition
-        #     b2Body* body = this->addBodyToWorld("rect1", &bodyDef);
-        self.body = self.add_body_to_world("rect1", self.body_def)
-        #
-        #     // Define another box shape for our dynamic body.
-        #     b2PolygonShape dynamicBox;
-        self.dynamic_box = b2.b2PolygonShape()
-        #     dynamicBox.SetAsBox(5.0f, 5.0f);
-        self.dynamic_box.SetAsBox(5.0, 5.0)
-        #
-        #     // Define the dynamic body fixture.
-        #     b2FixtureDef fixtureDef;
-        self.fixture_def = b2.b2FixtureDef()
-        #     fixtureDef.shape = &dynamicBox;
-        self.fixture_def.shape = self.dynamic_box
-        #     fixtureDef.restitution = .5;
-        self.fixture_def.restitution = .5
-        #
-        #     // Set the box density to be non-zero, so it will be dynamic.
-        #     fixtureDef.density = 1.0f;
-        self.fixture_def.density = 1.0
-        #
-        #     // Override the default friction.
-        #     fixtureDef.friction = 0.3f;
-        self.fixture_def.friction = 0.3
-        #
-        #     // Add the shape to the body.
-        #     this->addShapeToBody(body, &fixtureDef);
-        self.add_shape_to_body_fixture(self.body, self.fixture_def)
-        #
-        #     // Define the circle body. We set its position and call the body factory.
-        #     b2BodyDef cDef;
-        self.c_def = b2.b2BodyDef()
-        #     cDef.type = b2_dynamicBody;
-        self.c_def.type = b2.b2_dynamicBody
-        #     cDef.position.Set(10.0f, 24.0f);
-        self.c_def.position = b2.b2Vec2(10.0, 24.0)
-        #
-        #     //add body to world using definition
-        #     body = this->addBodyToWorld("circleTest", &cDef);
-        self.body = self.add_body_to_world("circleTest", self.c_def)
-        #
-        #     // Define another box shape for our dynamic body.
-        #     b2CircleShape dCircle;
-        self.d_circle = b2.b2CircleShape()
-        #     dCircle.m_radius = 5.0;
-        self.d_circle.radius = 5.0
-        #
-        #     // Define the dynamic body fixture.
-        #     b2FixtureDef circleDef;
-        self.circle_def = b2.b2FixtureDef()
-        #     circleDef.shape = &dCircle;
-        self.circle_def.shape = self.d_circle
-        #     circleDef.restitution = .5;
-        self.circle_def.restitution = 0.5
-        #
-        #     // Set the box density to be non-zero, so it will be dynamic.
-        #     circleDef.density = 1.0f;
-        self.circle_def.density = 1.0
-        #
-        #     // Override the default friction.
-        #     circleDef.friction = 0.3f;
-        self.circle_def.friction = 0.3
-        #
-        #     // Add the shape to the body.
-        #     this->addShapeToBody(body, &circleDef);
-        self.add_shape_to_body_fixture(self.body, self.circle_def)
-        #
-        #
-        #
-        #     //Add some forces!
-        #     //body->ApplyAngularImpulse(.4, true);
-        #
-        #     body->ApplyTorque(150, true);
-        self.body.ApplyTorque(150, True)
-        #     b2Vec2 pulse(70, 0);
-        #     b2Vec2 o(0,3);
-        #     body->ApplyLinearImpulse(pulse, o, true);
-        self.body.ApplyLinearImpulse(
-            b2.b2Vec2(70, 0), b2.b2Vec2(0, 3), True
-        )
-        #
-        # }
+        # #     // Define the dynamic body. We set its position and call the body factory.
+        # #     b2BodyDef bodyDef;
+        # self.body_def = b2.b2BodyDef()
+        # #     bodyDef.type = b2_dynamicBody;
+        # self.body_def.type = b2.b2_dynamicBody
+        # #     bodyDef.position.Set(0.0f, 24.0f);
+        # self.body_def.position = b2.b2Vec2(0.0, 24.0)
+        # #
+        # #     //add body to world using definition
+        # #     b2Body* body = this->addBodyToWorld("rect1", &bodyDef);
+        # self.body = self.add_body_to_world("rect1", self.body_def)
+        # #
+        # #     // Define another box shape for our dynamic body.
+        # #     b2PolygonShape dynamicBox;
+        # self.dynamic_box = b2.b2PolygonShape()
+        # #     dynamicBox.SetAsBox(5.0f, 5.0f);
+        # self.dynamic_box.SetAsBox(5.0, 5.0)
+        # #
+        # #     // Define the dynamic body fixture.
+        # #     b2FixtureDef fixtureDef;
+        # self.fixture_def = b2.b2FixtureDef()
+        # #     fixtureDef.shape = &dynamicBox;
+        # self.fixture_def.shape = self.dynamic_box
+        # #     fixtureDef.restitution = .5;
+        # self.fixture_def.restitution = .5
+        # #
+        # #     // Set the box density to be non-zero, so it will be dynamic.
+        # #     fixtureDef.density = 1.0f;
+        # self.fixture_def.density = 1.0
+        # #
+        # #     // Override the default friction.
+        # #     fixtureDef.friction = 0.3f;
+        # self.fixture_def.friction = 0.3
+        # #
+        # #     // Add the shape to the body.
+        # #     this->addShapeToBody(body, &fixtureDef);
+        # self.add_shape_to_body_fixture(self.body, self.fixture_def)
+        # #
+        # #     // Define the circle body. We set its position and call the body factory.
+        # #     b2BodyDef cDef;
+        # self.c_def = b2.b2BodyDef()
+        # #     cDef.type = b2_dynamicBody;
+        # self.c_def.type = b2.b2_dynamicBody
+        # #     cDef.position.Set(10.0f, 24.0f);
+        # self.c_def.position = b2.b2Vec2(10.0, 24.0)
+        # #
+        # #     //add body to world using definition
+        # #     body = this->addBodyToWorld("circleTest", &cDef);
+        # self.body = self.add_body_to_world("circleTest", self.c_def)
+        # #
+        # #     // Define another box shape for our dynamic body.
+        # #     b2CircleShape dCircle;
+        # self.d_circle = b2.b2CircleShape()
+        # #     dCircle.m_radius = 5.0;
+        # self.d_circle.radius = 5.0
+        # #
+        # #     // Define the dynamic body fixture.
+        # #     b2FixtureDef circleDef;
+        # self.circle_def = b2.b2FixtureDef()
+        # #     circleDef.shape = &dCircle;
+        # self.circle_def.shape = self.d_circle
+        # #     circleDef.restitution = .5;
+        # self.circle_def.restitution = 0.5
+        # #
+        # #     // Set the box density to be non-zero, so it will be dynamic.
+        # #     circleDef.density = 1.0f;
+        # self.circle_def.density = 1.0
+        # #
+        # #     // Override the default friction.
+        # #     circleDef.friction = 0.3f;
+        # self.circle_def.friction = 0.3
+        # #
+        # #     // Add the shape to the body.
+        # #     this->addShapeToBody(body, &circleDef);
+        # # self.add_shape_to_body_fixture(self.body, self.circle_def)
+        # #
+        # #
+        # #
+        # #     //Add some forces!
+        # #     //body->ApplyAngularImpulse(.4, true);
+        # #
+        # #     body->ApplyTorque(150, true);
+        # self.body.ApplyTorque(150, True)
+        # #     b2Vec2 pulse(70, 0);
+        # #     b2Vec2 o(0,3);
+        # #     body->ApplyLinearImpulse(pulse, o, true);
+        # self.body.ApplyLinearImpulse(
+        #     b2.b2Vec2(70, 0), b2.b2Vec2(0, 3), True
+        # )
+        # #
+        # # }
 
     def worldDrawList(self) -> str:
         # string IESoRWorld::worldDrawList()
@@ -384,6 +385,75 @@ class IESoRWorld(Framework):
         #     return writer->write(root);
         # }
         return json.dumps(root)
+
+    def Step(self, settings):
+        """
+                The main physics step.
+
+                Takes care of physics drawing (callbacks are executed after the world.Step() )
+                and drawing additional information.
+                """
+
+        self.stepCount += 1
+        # Don't do anything if the setting's Hz are <= 0
+        if settings.hz > 0.0:
+            timeStep = 1.0 / settings.hz
+        else:
+            timeStep = 0.0
+        #
+        #         //move the muscles quicker using this toggle
+        #         float speedup = 3;
+        speedup = 3
+        #
+        #         //we loop through all our muscles, and update the lengths associated with the connectionsj
+        #         for (std::vector<Muscle*>::iterator it = muscleList.begin() ; it != muscleList.end(); ++it)
+        #         {
+        for muscle in self.muscle_list:
+            #             //grab our muscle pointer from the list
+            #             Muscle* muscle = *it;
+            #
+            #             //get our distance joint -- holder of physical joint info
+            #             b2DistanceJoint* dJoint = (b2DistanceJoint*)muscle->GetJoint();
+            d_joint = muscle.get_joint()
+            #
+            #             //Javascript version
+            #             //muscle.SetLength(muscle.m_length + muscle.amplitude/this.scale*Math.cos(rad + muscle.phase*2*Math.PI));
+            #             //double lengthCalc = (dJoint->GetLength() + muscle->GetAmplitude()*cos(radians + muscle->GetPhase() * 2 * M_PI));
+            #
+            #             //fetch the original length of the distance joint, and add some fraction of that amount to the length
+            #             //depending on the current location in the muscle cycle
+            #             double lengthCalc = (1.0 + muscle->GetAmplitude() * cos(radians + muscle->GetPhase() * 2 * M_PI)) * muscle->GetOriginalLength();
+            length_calc = (
+                    1 + muscle.get_amplitude() * math.cos(
+                self.radians + muscle.get_phase() * 2 * math.pi
+            ) * muscle.get_original_length()
+            )
+            #
+            #             //we set our length as the calculate value
+            #             dJoint->SetLength(lengthCalc);
+            DistanceAccessor.setLength(d_joint, length_calc)
+        #         }
+        #
+        #         //step the physics world
+        #         this->world->Step(
+        #             this->simulationRate   //frame-rate
+        #             , 10       //velocity iterations
+        #             , 10       //position iterations
+        #         );
+        # self.world.Step(self.simulation_rate, 10, 10)
+        # #
+        # #         //manually clear forces when doing fixed time steps,
+        # #         //NOTE: that we disabled auto clear after step inside of the b2World
+        # #         this->world->ClearForces();
+        #
+        #
+        #         //increment the radians for the muscles
+        #         radians += speedup * this->simulationRate;
+        self.radians += speedup * timeStep
+        settings.velocityIterations = 10
+        settings.positionIterations = 10
+        super().Step(settings)
+        self.world.ClearForces()
 
     def updateWorld(self, ms_update: float) -> int:
         #
@@ -984,6 +1054,7 @@ class IESoRWorld(Framework):
         # //send back the joint we added to physical world
         # return ms;
         return ms
+
 
     def set_body(self, entity: dict) -> None:
         #
