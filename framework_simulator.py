@@ -97,7 +97,7 @@ class IESoRWorld(Framework):
         #
         #     //Pulling in some sample data for testing!
         #     std::string bodyJSON = loadDataFile("sampleBody224632.json");
-        self.body_json = self.load_data_file("sampleBody224632.json")
+        self.body_json = self.load_data_file("jsBody142856.json")
         #
         #     //pull in our JSON body plz
         #     Json::Value inBody;
@@ -394,64 +394,16 @@ class IESoRWorld(Framework):
                 and drawing additional information.
                 """
 
-        self.stepCount += 1
-        # Don't do anything if the setting's Hz are <= 0
+        # self.stepCount += 1
+        # # Don't do anything if the setting's Hz are <= 0
         if settings.hz > 0.0:
             timeStep = 1.0 / settings.hz
         else:
             timeStep = 0.0
-        #
-        #         //move the muscles quicker using this toggle
-        #         float speedup = 3;
-        speedup = 3
-        #
-        #         //we loop through all our muscles, and update the lengths associated with the connectionsj
-        #         for (std::vector<Muscle*>::iterator it = muscleList.begin() ; it != muscleList.end(); ++it)
-        #         {
-        for muscle in self.muscle_list:
-            #             //grab our muscle pointer from the list
-            #             Muscle* muscle = *it;
-            #
-            #             //get our distance joint -- holder of physical joint info
-            #             b2DistanceJoint* dJoint = (b2DistanceJoint*)muscle->GetJoint();
-            d_joint = muscle.get_joint()
-            #
-            #             //Javascript version
-            #             //muscle.SetLength(muscle.m_length + muscle.amplitude/this.scale*Math.cos(rad + muscle.phase*2*Math.PI));
-            #             //double lengthCalc = (dJoint->GetLength() + muscle->GetAmplitude()*cos(radians + muscle->GetPhase() * 2 * M_PI));
-            #
-            #             //fetch the original length of the distance joint, and add some fraction of that amount to the length
-            #             //depending on the current location in the muscle cycle
-            #             double lengthCalc = (1.0 + muscle->GetAmplitude() * cos(radians + muscle->GetPhase() * 2 * M_PI)) * muscle->GetOriginalLength();
-            length_calc = (
-                    1 + muscle.get_amplitude() * math.cos(
-                self.radians + muscle.get_phase() * 2 * math.pi
-            ) * muscle.get_original_length()
-            )
-            #
-            #             //we set our length as the calculate value
-            #             dJoint->SetLength(lengthCalc);
-            DistanceAccessor.setLength(d_joint, length_calc)
-        #         }
-        #
-        #         //step the physics world
-        #         this->world->Step(
-        #             this->simulationRate   //frame-rate
-        #             , 10       //velocity iterations
-        #             , 10       //position iterations
-        #         );
-        # self.world.Step(self.simulation_rate, 10, 10)
-        # #
-        # #         //manually clear forces when doing fixed time steps,
-        # #         //NOTE: that we disabled auto clear after step inside of the b2World
-        # #         this->world->ClearForces();
-        #
-        #
-        #         //increment the radians for the muscles
-        #         radians += speedup * this->simulationRate;
-        self.radians += speedup * timeStep
+        self.updateWorld(timeStep*1000.0)
         settings.velocityIterations = 10
         settings.positionIterations = 10
+        settings.hz = 0.0
         super().Step(settings)
         self.world.ClearForces()
 
@@ -990,10 +942,14 @@ class IESoRWorld(Framework):
         # }
         if props.get('dampingRatio', None) is not None:
             joint.dampingRatio = props['dampingRatio']
+        # else:
+        #     joint.dampingRatio = 1.0
+        joint.collideConnected = True
         #
         # //let's use our definition to make a real live joint!
         # b2Joint* wJoint = world->CreateJoint(joint);
-        w_joint = self.world.CreateJoint(joint)
+        w_joint = self.world.CreateJoint(joint)  # type: b2.b2DistanceJoint
+        # w_joint.collideConnected
         #
         # //we identify our bones by the count in the list
         # Bone* bone = new Bone(toString(boneList.size()), wJoint);
